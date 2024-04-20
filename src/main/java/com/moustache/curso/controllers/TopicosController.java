@@ -17,8 +17,29 @@ public class TopicosController {
     private TopicoRepository topicoRepository;
 
     @RequestMapping("/topicos")
-    public List<TopicoDto> coletarLista() {
-        List<Topico> topicos = topicoRepository.findAll();
+    public List<TopicoDto> coletarLista(String nomeCurso) {
+
+        List<Topico> topicos;
+
+        if (nomeCurso == null) {
+            topicos = topicoRepository.findAll();
+        } else {
+
+            // Para buscar por nome do curso, é necessário criar um método no repositório
+            // A convenção do Spring Data é findBy + nome do atributo
+            // Caso seja um atributo de outra classe, é necessário usar o nome do atributo +
+            // nome do atributo da outra classe
+
+            // Exemplos: findByNome | Isso vai procurar por um atributo chamado nome
+            // Exemplos: findByPessoasNome | caso tenha um atribudo Pessoa que é uma outra
+            // classe, ele vai procurar por um atributo chamado nome dentro da classe Pessoa
+
+            topicos = topicoRepository.findByCursoNome(nomeCurso);
+
+            // Também é possível usar o underline para separar os atributos, exemplo:
+            // topicos = topicoRepository.findByCurso_Nome(nomeCurso);
+        }
+
         return TopicoDto.converterParaDto(topicos);
     }
 
