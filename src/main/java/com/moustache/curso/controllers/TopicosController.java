@@ -18,6 +18,8 @@ import com.moustache.curso.models.Topico;
 import com.moustache.curso.repository.CursoRepository;
 import com.moustache.curso.repository.TopicoRepository;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/topicos")
 public class TopicosController {
@@ -55,7 +57,7 @@ public class TopicosController {
     }
 
     @PostMapping
-    public ResponseEntity<TopicoDto> cadastrar(@RequestBody TopicoForm form, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) {
         Topico topico = form.formatarParaTopico(cursoRepository);
         topicoRepository.save(topico);
 

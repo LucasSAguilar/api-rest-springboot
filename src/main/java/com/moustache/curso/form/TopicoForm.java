@@ -1,14 +1,23 @@
 package com.moustache.curso.form;
 
+
 import com.moustache.curso.models.Curso;
 import com.moustache.curso.models.Topico;
 import com.moustache.curso.repository.CursoRepository;
 
-public class TopicoForm {
-    private String titulo;
-    private String mensagem;
-    private String nomeCurso;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
+public class TopicoForm {
+
+    @NotNull @NotEmpty
+    private String titulo;
+    
+    @NotNull @NotEmpty
+    private String mensagem;
+    
+    @NotNull @NotEmpty
+    private String nomeCurso;
 
     public String getTitulo() {
         return this.titulo;
@@ -33,7 +42,6 @@ public class TopicoForm {
     public void setNomeCurso(String nomeCurso) {
         this.nomeCurso = nomeCurso;
     }
-
 
     public Topico formatarParaTopico(CursoRepository cursoRepository) {
         Curso curso = cursoRepository.findByNome(nomeCurso);
