@@ -15,12 +15,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.moustache.curso.dto.DetalhesDoTopicoDto;
 import com.moustache.curso.dto.TopicoDto;
+import com.moustache.curso.form.AtualizarTopicoForm;
 import com.moustache.curso.form.TopicoForm;
 import com.moustache.curso.models.Topico;
 import com.moustache.curso.repository.CursoRepository;
 import com.moustache.curso.repository.TopicoRepository;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/topicos")
@@ -69,9 +72,16 @@ public class TopicosController {
     }
 
     @GetMapping("/{id}")
-    public DetalhesDoTopicoDto selecionarUm(@PathVariable Long id){
+    public DetalhesDoTopicoDto selecionarUm(@PathVariable Long id) {
         Topico topico = topicoRepository.findById(id).get();
         return new DetalhesDoTopicoDto(topico);
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<TopicoDto> atualizarTopico(@PathVariable Long id, @RequestBody @Valid AtualizarTopicoForm novosDados) {
+        Topico topicoAlterado = novosDados.atualizar(id, topicoRepository);
+        return ResponseEntity.ok(new TopicoDto(topicoAlterado));
     }
 
 }
